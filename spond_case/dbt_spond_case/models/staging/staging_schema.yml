@@ -1,0 +1,116 @@
+version: 2
+
+models:
+  - name: stg_teams
+    description: "Lists of teams"
+    columns:
+      - name: team_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: activity
+        description: "The activity of the team"
+        data_tests:
+          - not_null
+      - name: country_code
+        description: "The country code of the team"
+        data_tests:
+          - not_null
+      - name: created_time
+        description: "The time the team was created"
+        data_tests:
+          - not_null
+  
+  - name: stg_memberships
+    description: "Lists of memberships"
+    columns:
+      - name: membership_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: team_id
+        description: "The team id of the membership"
+        data_tests:
+          - not_null     
+          - relationships:
+              to: ref('stg_teams')
+              field: team_id
+      - name: role_title
+        description: "The role title of the membership"
+        data_tests:
+          - not_null
+      - name: joined_time
+        description: "The time the membership was joined"
+        data_tests:
+          - not_null
+  
+  - name: stg_events
+    description: "Lists of events"
+    columns:
+      - name: event_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: team_id
+        description: "The team id of the event"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_teams')
+              field: team_id
+      - name: event_start_time
+        description: "The start time of the event"
+        data_tests:
+          - not_null
+      - name: event_end_time
+        description: "The end time of the event"
+        data_tests:
+          - not_null
+      - name: latitude
+        description: "The latitude of the event"
+        data_tests:
+          - not_null
+      - name: longitude
+        description: "The longitude of the event"
+        data_tests:
+          - not_null
+      - name: created_time
+        description: "The time the event was created"
+        data_tests:
+          - not_null
+  
+  - name: stg_event_rsvps
+    description: "Lists of event RSVPs"
+    columns:
+      - name: event_rsvp_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
+      - name: event_id
+        description: "The event id of the RSVP"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_events')
+              field: event_id
+      - name: membership_id
+        description: "The membership id of the RSVP"
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_memberships')
+              field: membership_id
+      - name: rsvp_status_code
+        description: "The RSVP status code of the member"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2]
+      - name: responded_time
+        description: "The time the RSVP was responded"
+        data_tests:
+          - not_null

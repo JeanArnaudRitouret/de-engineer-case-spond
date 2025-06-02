@@ -1,0 +1,13 @@
+dbt_spond_case:
+  target: dev
+  outputs:
+    dev:
+      type: redshift
+      host: "{{ env_var('REDSHIFT_HOST') }}"
+      user: "{{ env_var('REDSHIFT_USER') }}"
+      password: "{{ env_var('REDSHIFT_PASSWORD') }}"
+      port: "{{ env_var('REDSHIFT_PORT', '5439') | as_number }}"
+      dbname: "{{ env_var('REDSHIFT_DB') }}"
+      schema: "{{ env_var('REDSHIFT_SCHEMA', 'analytics') }}"
+      threads: "{{ env_var('DBT_THREADS', '4') | as_number }}"
+      keepalives_idle: 0

@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: rbt_event_rsvps_daily
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_events')
+              field: event_id
+      - name: responded_date
+        tests:
+          - not_null
+          - unique
+      - name: num_unanswered_event_rsvps
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "num_unanswered_event_rsvps >= 0"
+      - name: unique_members_with_unanswered_event_rsvps
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "unique_members_with_unanswered_event_rsvps >= 0"
+          - dbt_utils.expression_is_true:
+              expression: "unique_members_with_unanswered_event_rsvps <= num_unanswered_event_rsvps"
+      

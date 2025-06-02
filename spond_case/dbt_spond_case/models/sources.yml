@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: public
+    description: "Public schema from the source database"
+    tables:
+      - name: teams
+        description: "Raw teams data from the source system"
+      - name: memberships
+        description: "Raw memberships data from the source system"
+      - name: events
+        description: "Raw events data from the source system"
+      - name: event_rsvps
+        description: "Raw event RSVPs data from the source system"
+  

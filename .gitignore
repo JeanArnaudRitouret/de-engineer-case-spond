@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+
+# Virtual environment
+.venv/
+
+# Environment variables
+.envrc
+
+# Logs
+*.log
+
+# dbt
+target/
+dbt_packages/
+logs/
+
+# macOS
+.DS_Store
+
+# pyenv
+.python-version
+
+# Poetry
+poetry.lock 
