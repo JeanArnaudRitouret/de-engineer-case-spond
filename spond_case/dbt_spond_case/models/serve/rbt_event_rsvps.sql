@@ -6,10 +6,6 @@
 
 with 
 
-stg_events as (
-    select * from {{ ref('stg_events') }}
-),
-
 stg_event_rsvps as (
     select * 
     from {{ ref('stg_event_rsvps') }}
@@ -22,7 +18,7 @@ select
     -- DIMENSIONS
     event_rsvp.event_id,
     event_rsvp.responded_date,
-    -- METRICS
+    -- MEASURES
     sum(
         case when event_rsvp.rsvp_status_code = 0 then 1 else 0 end
     ) as num_unanswered_event_rsvps,
@@ -43,8 +39,6 @@ select
     ) as unique_members_with_declined_event_rsvps
     
 from stg_event_rsvps as event_rsvp
-inner join stg_events as event 
-    on event_rsvp.event_id = event.event_id
 group by 
     event_rsvp.event_id,
     event_rsvp.responded_date
