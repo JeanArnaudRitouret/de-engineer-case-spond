@@ -1,12 +1,10 @@
-# Description of the problem
-
-
-# Set Up
+# Hot To Set Up
 
 This project uses:
 - `pyenv` to manage python versions (the local version set for this project is 3.13)
 - `Poetry` to manage dependencies. Run `poetry install` to install the dependencies.
-- `direnv` for variables, the file `.env.template` is given as a model for required variables.
+- `direnv` for variables, the file `.env.template` is given as a model for required variables
+    - copy paste the content into a `.env` or `.envrc` file and fill it with your own values
 
 
 # Tech choices
@@ -32,9 +30,15 @@ here's how to replicate:
 
 
 ### Amazon Redshift Serverless
-Redshift Serverless balances performance and cost-efficiency. 
-- Both staging and transformed layers in the same place
-- I have assumed that priority is on efficiency and scalability instead of cost (other options could be less costly for this specific case)
+- I used only Redshift Serverless for both staging and transformed layers, since:
+    - it makes the pipleline simpler to set up and manage
+    - it removes cost from other services and you pay only what you use
+    - it has a good performance for analytics queries
+    - it can auto-scale compute and concurrency
+- In production, I might consider a raw data lake in S3 
+    - it would ensure immutable records useful for data recovery
+    - it would separate the ingestion process from the transformation process
+    - it offers one place to also potentially non-structured data or from other data sources
 
 
 ### DBT
@@ -80,7 +84,7 @@ Here's how to run the dbt models/tests:
 
 
 ## Data quality issues
-- `memberships` doesn't feel like the most adequate name for the table. It seems the table is about members/users. Maybe it could be worth to create a dimentions table called `members` instead which would be clearer for end users. 
+- `memberships` table seems to be missing a member_id column, as I would understand membership as a member joining a team?
 - Multiple tests are failing that shouldbe investigated to see if the source data is missing or if the test is to be removed:
 
 ```
